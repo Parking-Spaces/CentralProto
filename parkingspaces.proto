@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+service ParkingSpaces {
+
+  //Fetch the current state of all the spaces in the parking lot
+  rpc fetchAllParkingStates(ParkingSpacesRq) returns (stream ParkingSpaceStatus);
+
+  //Subscribe to the manager to receive updates on parking spaces that have been occupied
+  rpc subscribeToParkingStates(ParkingSpacesRq) returns (stream ParkingSpaceStatus);
+
+  //Attempt to reserve a parking space in the parking lot
+  rpc attemptToReserveSpace(ParkingSpaceReservation) returns (ReservationResponse);
+
+}
+
+enum SpaceStates {
+  OCCUPIED = 0;
+  RESERVED = 1;
+  FREE = 2;
+};
+
+enum ReserveResponse {
+  SUCCESSFUL = 0;
+  FAILED_LICENSE_PLATE_ALREADY_HAS_RESERVE = 1;
+  FAILED_SPACE_OCCUPIED = 2;
+  FAILED_SPACE_RESERVED = 3;
+};
+
+message ParkingSpaceReservation {
+
+  int32 spaceID = 1;
+
+  string licencePlate = 2;
+
+}
+
+message ReservationResponse {
+
+  int32 spaceID = 1;
+
+  ReserveResponse response = 2;
+
+}
+
+message ParkingSpacesRq { }
+
+message ParkingSpaceStatus {
+
+  int32 spaceID = 1;
+
+  SpaceStates spaceState = 2;
+
+}
+
+
