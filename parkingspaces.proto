@@ -9,7 +9,7 @@ service ParkingSpaces {
   rpc attemptToReserveSpace(ParkingSpaceReservation) returns (ReservationResponse);
 
   //Cancel the reservation for a space
-  rpc cancelSpaceReservation(ParkingSpaceReservation) returns (ReservationResponse);
+  rpc cancelSpaceReservation(ParkingSpaceReservation) returns (ReservationCancelResponse);
 
 }
 
@@ -37,9 +37,10 @@ enum ReserveState {
 };
 
 enum ReservationState {
-  RESERVE_CANCELLED_SPACE_OCCUPIED = 0;
-  RESERVE_CANCELLED_PARKED_SOMEWHERE_ELSE = 1;
-  RESERVE_CONCLUDED = 2;
+  RESERVE_CANCELLED = 0;
+  RESERVE_CANCELLED_SPACE_OCCUPIED = 1;
+  RESERVE_CANCELLED_PARKED_SOMEWHERE_ELSE = 2;
+  RESERVE_CONCLUDED = 3;
 };
 
 enum ReserveCancelState {
@@ -53,6 +54,12 @@ message ParkingSpaceReservation {
 
   string licencePlate = 2;
 
+}
+
+message ReservationCancelResponse {
+  int32 spaceID = 1;
+
+  ReserveCancelState cancelState = 2;
 }
 
 message ReservationResponse {
