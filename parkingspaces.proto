@@ -94,6 +94,8 @@ message ParkingSpaceStatus {
   string spaceSection = 2;
 
   SpaceStates spaceState = 3;
+  
+  bool fireAlarm = 4;
 
 }
 
